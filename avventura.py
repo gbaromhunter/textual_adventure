@@ -16,17 +16,16 @@ del passaggio successivo
 from rich import print
 from rich.console import Console
 from rich.layout import Layout, Panel
-from rich.text import Text
 from rich.padding import Padding
+from rich.text import Text
 
 console = Console()
 
 
-def create_splitted_layout(upper_title, lower_title, ratio):
+def create_splitted_layout(upper_title, lower_left_title, lower_right_title, ratio):
     layout = Layout()
-    layout.split_column(Layout(name=upper_title), Layout(name=lower_title))
-    layout[upper_title].size = None
-    layout[upper_title].ratio = ratio
+    layout.split_column(Layout(name=upper_title, size=None, ratio=ratio), Layout(name="lower"))
+    layout["lower"].split_row(Layout(name=lower_left_title, ratio=2), Layout(name=lower_right_title, ratio=1))
     return layout
 
 
@@ -36,11 +35,12 @@ def color_word(word, color):
 
 class Node:
 
-    def __init__(self, upper_title="", lower_title="", ratio=3, text="", child=None, parent=None, highlighted=None,
-                 name=""):
+    def __init__(self, upper_title="", lower_left_title="", lower_right_title="", ratio=3, text="", name="",
+                 parent=None, highlighted=None, child=None):
         self.name = name
         self.upper_title = upper_title
-        self.lower_title = lower_title
+        self.lower_left_title = lower_left_title
+        self.lower_right_title = lower_right_title
         if child is None:
             child = {}
         if parent is None:
@@ -53,7 +53,7 @@ class Node:
             self.actions.highlight_words(highlighted, "green")
         self.parent = parent
         self.child = child
-        self.layout = create_splitted_layout(self.upper_title, self.lower_title, ratio)
+        self.layout = create_splitted_layout(self.upper_title, self.lower_left_title, self.lower_right_title, ratio)
 
     def get_name(self):
         return self.name
@@ -93,17 +93,17 @@ class Node:
                                                           title_align="center",
                                                           title=color_word(self.upper_title, "red"),
                                                           highlight=True)))
-        self.layout[self.lower_title].update(Layout(Panel(self.actions,
-                                                          title_align="center",
-                                                          title=color_word(self.lower_title, "red"),
-                                                          highlight=True)))
+        self.layout[self.lower_left_title].update(Layout(Panel(self.actions,
+                                                               title_align="center",
+                                                               title=color_word(self.lower_left_title, "red"),
+                                                               highlight=True)))
+        self.layout[self.lower_right_title].update(Layout(Panel("",
+                                                                title_align="center",
+                                                                title=color_word(self.lower_right_title, "red"),
+                                                                highlight=True)))
         print(self.layout)
 
 
-inizio = Node(upper_title="Nodo di prova",
-              lower_title="Azioni che puoi compiere",
-              ratio=3,
-              text="Questo è un nodo di prova per vedere come esce",
-              highlighted=["nodo", "prova"])
+inizio = Node(upper_title="Nodo di prova", lower_left_title="Azioni che puoi compiere", lower_right_title="Digita qui",
+              ratio=3, text="Questo è un nodo di prova per vedere come esce", highlighted=["nodo", "prova"])
 inizio.display()
-
