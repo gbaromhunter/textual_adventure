@@ -16,8 +16,8 @@ del passaggio successivo
 from rich import print
 from rich.console import Console
 from rich.layout import Layout, Panel
-from rich.pretty import Pretty
 from rich.text import Text
+from rich.padding import Padding
 
 console = Console()
 
@@ -36,21 +36,27 @@ def color_word(word, color):
 
 class Node:
 
-    def __init__(self, upper_title="", lower_title="", ratio=3, text="", child=None, parent=None, highlighted=None):
+    def __init__(self, upper_title="", lower_title="", ratio=3, text="", child=None, parent=None, highlighted=None,
+                 name=""):
+        self.name = name
         self.upper_title = upper_title
         self.lower_title = lower_title
         if child is None:
             child = {}
         if parent is None:
             parent = {}
+        self.highlighted = highlighted
         self.text = Text(text, justify="center")
+        self.actions = Text(" - ".join(self.highlighted), justify="center")
         if highlighted:
             self.text.highlight_words(highlighted, "green")
+            self.actions.highlight_words(highlighted, "green")
         self.parent = parent
         self.child = child
         self.layout = create_splitted_layout(self.upper_title, self.lower_title, ratio)
-        self.actions = list(highlighted)
-        self.highlighted = highlighted
+
+    def get_name(self):
+        return self.name
 
     def get_text(self):
         return self.text
@@ -82,12 +88,12 @@ class Node:
                 self.parent[key] = parent
 
     def display(self):
-        actions = Pretty(self.actions)
-        self.layout[self.upper_title].update(Layout(Panel(self.text,
+        padded_text = Padding(self.text, (1,))
+        self.layout[self.upper_title].update(Layout(Panel(padded_text,
                                                           title_align="center",
                                                           title=color_word(self.upper_title, "red"),
                                                           highlight=True)))
-        self.layout[self.lower_title].update(Layout(Panel(actions,
+        self.layout[self.lower_title].update(Layout(Panel(self.actions,
                                                           title_align="center",
                                                           title=color_word(self.lower_title, "red"),
                                                           highlight=True)))
@@ -95,8 +101,9 @@ class Node:
 
 
 inizio = Node(upper_title="Nodo di prova",
-              lower_title="Azioni",
+              lower_title="Azioni che puoi compiere",
               ratio=3,
               text="Questo è un nodo di prova per vedere come esce",
-              highlighted={"prova": "green"})
+              highlighted=["nodo", "prova"])
 inizio.display()
+
