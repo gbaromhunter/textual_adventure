@@ -19,6 +19,7 @@ from rich.layout import Layout, Panel
 from rich.padding import Padding
 from rich.text import Text
 
+
 console = Console()
 
 
@@ -102,6 +103,7 @@ class Node:
                                                                 title=color_word(self.lower_right_title, "red"),
                                                                 highlight=True)))
         print(self.layout)
+        return console.input()
 
 
 inizio = Node(upper_title="Nodo di prova", lower_left_title="Azioni che puoi compiere", lower_right_title="Digita qui",
