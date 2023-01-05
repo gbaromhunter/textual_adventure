@@ -1,7 +1,10 @@
+from node import *
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Vertical, Horizontal, Container
 from textual.reactive import reactive
 from textual.widgets import Label, Input
+from rich.text import Text
+
 
 main_text = "This is the main text box"
 information_text = "This is the information text box"
