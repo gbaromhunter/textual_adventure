@@ -12,6 +12,18 @@ possibilità di rimediare all'errore.
 Bisogna che crei una data structure apposita per i passaggi.
 Ogni passaggio come attributo avrà il testo, le parole chiave da poter approfondire, e un dizionario che punta al nome
 del passaggio successivo
+
+
+
+possible concept:
+costruire un minigioco: attivare un timer e far stoppare l'utente esattamente al momento giusto sui 10 secondi.
+Tenere il tempo e vedere di quanto si allontana dalla cifra prestabilita (10). Sommare questi punteggi su 3 tentativi,
+
+io lo faccio più volte e vedo quanto è il mio score, salvo gli esiti dei miei tentativi di modo tale da avere un
+riscontro e poter, se l'utente gioca, avere già degli esiti che l'utente deve battere.
+esempio: gioco 40 volte e il mio score medio è 343 punti. l'utente deve fare 344 punti per battermi
+
+magari posso fare più livelli di difficoltà per il giocatore e dare risposte in accordo
 """
 from rich import print
 from rich.console import Console
