@@ -80,11 +80,11 @@ class Adventure(App):
 
     @staticmethod
     def on_input_submitted(event: Input.Submitted) -> None:
+        global current_node
         if event.input.value in current_node.actions:
             for node in nodes_list:
                 if event.input.value == node.name:
                     current_node = node
-                    global current_node
         elif event.input.value in current_node.informative:
             for word in current_node.informative:
                 if event.input.value == word:
