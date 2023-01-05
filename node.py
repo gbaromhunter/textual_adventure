@@ -48,12 +48,3 @@ class Node:
         else:
             self.informative = {new_word: description}
 
-
-test = Node(text="this is a test node. The next one will be a test as well.",
-            name="test",
-            actions={
-                "next": "test2"
-            },
-            informative={
-                "test": "Wow, are you surprised i'm going to write the word test again? Test."
-            })

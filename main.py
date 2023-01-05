@@ -1,39 +1,65 @@
-from node import *
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Vertical, Horizontal, Container
 from textual.reactive import reactive
 from textual.widgets import Label, Input
-from rich.text import Text
 
+from node import *
 
-main_text = "This is the main text box"
-information_text = "This is the information text box"
-possible_actions = "Here will be the possible actions and keywords"
-user_input = "Here goes the console that the user will use to input the text"
-possible_test = ["update main", "update secondary"]
+test = Node(text="this is the first test node. The next one will be the second test",
+            name="test",
+            actions={
+                "next": "test2"
+            },
+            informative={
+                "first": "Wow, are you surprised i'm going to write the word test again? Test."
+            })
+
+test2 = Node(text="this is the second test node. The next one will be the third test",
+             name="test2",
+             actions={
+                 "next": "test3"
+             },
+             informative={
+                 "second": "Hey, Test is forever, right? Test."
+             })
+
+test3 = Node(text="this is the third test node.",
+             name="test3",
+             actions={
+                 "next": "test3"
+             },
+             informative={
+                 "third": "Test for life man! The Testcode!"
+             })
+
+nodes_list = [test, test2, test3]
+
+current_node = test
 
 
 class MainBox(Label):
     """Display a greeting."""
 
-    main_text = reactive("This is the main text box")
+    main_text = reactive(current_node.text)
 
     def render(self) -> RenderResult:
         return self.main_text
 
 
-class InformationBox(Label):
+class Information(Label):
     """Displays the additional information for the keywords"""
 
+    informative = reactive("Type an action word to change node or an informative word for additional information")
+
     def render(self) -> RenderResult:
-        return information_text
+        return self.informative
 
 
 class PossibleBox(Label):
     """Displays the possible actions and keywords"""
 
     def render(self) -> RenderResult:
-        return possible_actions
+        return "dummy text"
 
 
 class UserInput(Container):
@@ -48,12 +74,21 @@ class Adventure(App):
 
     def compose(self) -> ComposeResult:
         yield Horizontal(
-            Vertical(MainBox(), InformationBox(), id="left"),
+            Vertical(MainBox(), Information(), id="left"),
             Vertical(PossibleBox(), UserInput(), id="right")
         )
 
-    def on_input_submitted(self, event: Input.Submitted) -> None:
-        self.query_one(MainBox).main_text = event.input.value
+    @staticmethod
+    def on_input_submitted(event: Input.Submitted) -> None:
+        if event.input.value in current_node.actions:
+            for node in nodes_list:
+                if event.input.value == node.name:
+                    current_node = node
+                    global current_node
+        elif event.input.value in current_node.informative:
+            for word in current_node.informative:
+                if event.input.value == word:
+                    Information.informative = current_node.informative[word]
         event.input.value = ""
 
 
