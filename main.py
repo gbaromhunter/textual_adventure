@@ -5,9 +5,9 @@ from textual.reactive import reactive
 from textual.widgets import Label, Input
 
 # Import the Node and Active classes
-from node import Node, Active
+from node import Node
 
-# Create some test nodes and assign the first test one to the Active current_node
+# Create some test nodes and assign the first test one to the Active self.current_node
 test = Node(text="this is the first test node. The next one will be the second test",
             name="test",
             actions={
@@ -37,14 +37,16 @@ test3 = Node(text="this is the third test node. The previous one is the second."
              })
 
 nodes_list = [test, test2, test3]
-current_node = Active(test)
+
+
+# self.current_node = Active(test)
 
 
 # Define the widget classes
 class MainBox(Label):
     """Display a greeting."""
 
-    main_text = reactive(current_node.current.text)
+    main_text = reactive(test.text)
 
     def render(self) -> RenderResult:
         return self.main_text
@@ -70,25 +72,28 @@ class UserInput(Container):
 class Adventure(App):
     """This is the main application"""
     CSS_PATH = "main.css"
+    current_node = reactive(test)
+
+    def change_node(self, new_node: Node):
+        self.current_node = new_node
 
     def compose(self) -> ComposeResult:
         yield MainBox()
         yield Information()
         yield UserInput()
 
-    @staticmethod
-    def on_input_submitted(event: Input.Submitted) -> None:
-        if event.input.value in current_node.current.actions:
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        if event.input.value in self.current_node.actions:
             for node in nodes_list:
-                if current_node.current.actions[event.input.value] == node.name:
-                    current_node.change_node(node)
-                    MainBox.main_text = current_node.current.text
+                if self.current_node.actions[event.input.value] == node.name:
+                    self.change_node(node)
+                    MainBox.main_text = self.current_node.text
                     break
 
-        elif event.input.value in current_node.current.informative:
-            for word in current_node.current.informative:
+        elif event.input.value in self.current_node.informative:
+            for word in self.current_node.informative:
                 if event.input.value == word:
-                    Information.informative = current_node.current.informative[word]
+                    Information.informative = self.current_node.informative[word]
         event.input.value = ""
 
 
