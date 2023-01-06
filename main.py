@@ -1,5 +1,5 @@
 from textual.app import App, ComposeResult, RenderResult
-from textual.containers import Vertical, Horizontal, Container
+from textual.containers import Container
 from textual.reactive import reactive
 from textual.widgets import Label, Input
 
@@ -33,25 +33,7 @@ test3 = Node(text="this is the third test node.",
              })
 
 nodes_list = [test, test2, test3]
-
 current_node = test
-
-
-def color_word(word: str, color: str) -> str:
-    """
-    This function add some tags to the word and returns a full tagged string
-    """
-    return f"[{color}]{word}[/{color}]"
-
-
-# def highlight_node_text(node: Node):
-#     text = node.text
-#     for word in node.actions:
-#         text.replace(word, color_word(word, "red"))
-#     for word in node.informative:
-#         text.replace(word, color_word(word, "green"))
-
-
 
 
 class MainBox(Label):
@@ -66,8 +48,8 @@ class MainBox(Label):
 class Information(Label):
     """Displays the additional information for the keywords"""
 
-    informative = reactive("Type an [red]action[/red] word to change node or an [green]informative[/green] word for "
-                           "additional information")
+    informative = reactive(
+        "Type an [red]action[/red] word to change node or an [green]informative[/green] word to inspect it")
 
     def render(self) -> RenderResult:
         return self.informative
@@ -77,7 +59,7 @@ class UserInput(Container):
     """Displays the possible actions and keywords"""
 
     def compose(self) -> ComposeResult:
-        yield Input(placeholder="Write here")
+        yield Input(placeholder="Type an action (highlighted in red) or an informative word (highlighted in green)")
 
 
 class Adventure(App):
