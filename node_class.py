@@ -1,13 +1,4 @@
-# This file describes the behaviour of the Node which contains information about the story.
-
-
-# def color_word(word: str, color: str) -> str:
-#     """
-#     This function add some tags to the word and returns a full tagged string
-#     """
-#     return f"[{color}]{word}[/{color}]"
-
-
+# Create the Node class
 class Node:
     """
     The class describes the behaviour of the Node.
@@ -52,17 +43,6 @@ class Node:
 
     def highlight_node_text(self) -> None:
         for word in self.actions:
-            self.text = self.text.replace(word, f"[red]{word}[/red]")
+            self.text = self.text.replace(word, f"[italic bold purple]{word}[/italic bold purple]")
         for word in self.informative:
-            self.text = self.text.replace(word, f"[green]{word}[/green]")
-
-
-class Active:
-    def __init__(self, current: Node) -> None:
-        self.current = current
-
-    def change_node(self, new_node: Node) -> None:
-        self.current = new_node
-
-
-
+            self.text = self.text.replace(word, f"[italic bold green]{word}[/italic bold green]")
