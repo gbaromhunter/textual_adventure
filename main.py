@@ -37,6 +37,23 @@ nodes_list = [test, test2, test3]
 current_node = test
 
 
+def color_word(word: str, color: str) -> str:
+    """
+    This function add some tags to the word and returns a full tagged string
+    """
+    return f"[{color}]{word}[/{color}]"
+
+
+# def highlight_node_text(node: Node):
+#     text = node.text
+#     for word in node.actions:
+#         text.replace(word, color_word(word, "red"))
+#     for word in node.informative:
+#         text.replace(word, color_word(word, "green"))
+
+
+
+
 class MainBox(Label):
     """Display a greeting."""
 
@@ -49,17 +66,11 @@ class MainBox(Label):
 class Information(Label):
     """Displays the additional information for the keywords"""
 
-    informative = reactive("Type an action word to change node or an informative word for additional information")
+    informative = reactive("Type an [red]action[/red] word to change node or an [green]informative[/green] word for "
+                           "additional information")
 
     def render(self) -> RenderResult:
         return self.informative
-
-
-class PossibleBox(Label):
-    """Displays the possible actions and keywords"""
-
-    def render(self) -> RenderResult:
-        return "dummy text"
 
 
 class UserInput(Container):
@@ -73,10 +84,9 @@ class Adventure(App):
     CSS_PATH = "main.css"
 
     def compose(self) -> ComposeResult:
-        yield Horizontal(
-            Vertical(MainBox(), Information(), id="left"),
-            Vertical(PossibleBox(), UserInput(), id="right")
-        )
+        yield MainBox()
+        yield Information()
+        yield UserInput()
 
     @staticmethod
     def on_input_submitted(event: Input.Submitted) -> None:
