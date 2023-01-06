@@ -55,3 +55,11 @@ class Node:
             self.text = self.text.replace(word, f"[red]{word}[/red]")
         for word in self.informative:
             self.text = self.text.replace(word, f"[green]{word}[/green]")
+
+
+class Active:
+    def __init__(self, current: Node) -> None:
+        self.current = current
+
+    def change_node(self, new_node: Node) -> None:
+        self.current = new_node

@@ -33,13 +33,13 @@ test3 = Node(text="this is the third test node.",
              })
 
 nodes_list = [test, test2, test3]
-current_node = test
+current_node = Active(test)
 
 
 class MainBox(Label):
     """Display a greeting."""
 
-    main_text = reactive(current_node.text)
+    main_text = reactive(current_node.current.text)
 
     def render(self) -> RenderResult:
         return self.main_text
@@ -72,15 +72,14 @@ class Adventure(App):
 
     @staticmethod
     def on_input_submitted(event: Input.Submitted) -> None:
-        global current_node
-        if event.input.value in current_node.actions:
+        if event.input.value in current_node.current.actions:
             for node in nodes_list:
                 if event.input.value == node.name:
-                    current_node = node
-        elif event.input.value in current_node.informative:
-            for word in current_node.informative:
+                    current_node.change_node(node)
+        elif event.input.value in current_node.current.informative:
+            for word in current_node.current.informative:
                 if event.input.value == word:
-                    Information.informative = current_node.informative[word]
+                    Information.informative = current_node.current.informative[word]
         event.input.value = ""
 
 
