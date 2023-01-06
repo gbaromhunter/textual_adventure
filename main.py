@@ -5,36 +5,6 @@ from textual.widgets import Label, Input
 
 from node import *
 
-test = Node(text="this is the first test node. The next one will be the second test",
-            name="test",
-            actions={
-                "next": "test2"
-            },
-            informative={
-                "first": "Wow, are you surprised i'm going to write the word test again? Test."
-            })
-
-test2 = Node(text="this is the second test node. The next one will be the third test",
-             name="test2",
-             actions={
-                 "next": "test3"
-             },
-             informative={
-                 "second": "Hey, Test is forever, right? Test."
-             })
-
-test3 = Node(text="this is the third test node.",
-             name="test3",
-             actions={
-                 "next": "test3"
-             },
-             informative={
-                 "third": "Test for life man! The Testcode!"
-             })
-
-nodes_list = [test, test2, test3]
-current_node = Active(test)
-
 
 class MainBox(Label):
     """Display a greeting."""
@@ -74,8 +44,11 @@ class Adventure(App):
     def on_input_submitted(event: Input.Submitted) -> None:
         if event.input.value in current_node.current.actions:
             for node in nodes_list:
-                if event.input.value == node.name:
+                if current_node.current.actions[event.input.value] == node.name:
                     current_node.change_node(node)
+                    MainBox.main_text = current_node.current.text
+                    break
+
         elif event.input.value in current_node.current.informative:
             for word in current_node.current.informative:
                 if event.input.value == word:
