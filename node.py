@@ -65,33 +65,4 @@ class Active:
         self.current = new_node
 
 
-test = Node(text="this is the first test node. The next one will be the second test",
-            name="test",
-            actions={
-                "second test": "test2",
-            },
-            informative={
-                "first": "Wow, are you surprised i'm going to write the word test again? Test."
-            })
 
-test2 = Node(text="this is the second test node. The next one will be the third test. The previous one is the first",
-             name="test2",
-             actions={
-                 "third test": "test3",
-                 "first": "test",
-             },
-             informative={
-                 "second": "Hey, Test is forever, right? Test.",
-             })
-
-test3 = Node(text="this is the third test node. The previous one is the second.",
-             name="test3",
-             actions={
-                 "second": "test2"
-             },
-             informative={
-                 "third": "Test for life man! The Testcode!"
-             })
-
-nodes_list = [test, test2, test3]
-current_node = Active(test)
