@@ -8,4 +8,5 @@ You can edit the Css file and tags to suit your needs.
 As it's built with TextualUI You can add widgets etc...
 
 Screenshot of a test node:
-![immagine](https://user-images.githubusercontent.com/93917594/211153747-1350415b-c5cc-44b8-ae7f-1a8dda552a56.png)
+![immagine](https://user-images.githubusercontent.com/93917594/211154228-061f80c9-a682-4a40-906d-2db03a4b8c87.png)
+
