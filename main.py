@@ -4,15 +4,22 @@ from textual.containers import Container
 from textual.reactive import reactive
 from textual.widgets import Label, Input
 
-from node_class import Node
-from nodes import nodes_list
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
+from node_class import Node, Base
+
+engine = create_engine('sqlite:///nodes_database.sqlite')
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
+nodes_list = session.query(Node)
 
 # Define the widget classes
 class MainBox(Label):
     """Display a greeting."""
 
-    main_text = reactive(nodes_list[0].text)
+    main_text = reactive(nodes_list[0].highlighted_text())
 
     def render(self) -> RenderResult:
         return self.main_text
@@ -23,7 +30,7 @@ class Information(Label):
 
     informative = reactive(
         "Type an [italic bold purple]action[/italic bold purple] word to change node "
-        "or an [italic bold green]informative[/italic bold green] word to inspect it")
+        "or an [italic bold green]main_information_text[/italic bold green] word to inspect it")
 
     def render(self) -> RenderResult:
         return self.informative
@@ -33,7 +40,7 @@ class UserInput(Container):
     """Displays the possible actions and keywords"""
 
     def compose(self) -> ComposeResult:
-        yield Input(placeholder="Type an action (highlighted in purple) or an informative word (highlighted in green)")
+        yield Input(placeholder="Type an action (highlighted in purple) or an main_information_text word (highlighted in green)")
 
 
 class Adventure(App):
@@ -54,13 +61,13 @@ class Adventure(App):
             for node in nodes_list:
                 if self.current_node.actions[event.input.value] == node.name:
                     self.change_node(node)
-                    self.query_one(MainBox).main_text = self.current_node.text
+                    self.query_one(MainBox).nodes_list_text = self.current_node.highlighted_text()
                     break
 
         elif event.input.value in self.current_node.informative:
             for word in self.current_node.informative:
                 if event.input.value == word:
-                    self.query_one(Information).informative = self.current_node.informative[word]
+                    self.query_one(Information).main_information_text = self.current_node.informative[word]
         event.input.value = ""
 
 

@@ -1,24 +1,31 @@
+import sqlalchemy_jsonfield
+from sqlalchemy import Column, String
+from sqlalchemy.ext.declarative import declarative_base
+
+# Import the Base class
+Base = declarative_base()
+
+
 # Create the Node class
-class Node:
+class Node(Base):
     """
     The class describes the behaviour of the Node.
     actions is a dictionary with words as keys, and as values the name of the subsequent nodes
-    informative is a dictionary with words as keys, and as values the text to display in the information panel
+    main_information_text is a dictionary with words as keys, and as values the text to display in the information panel
     """
+    __tablename__ = 'nodes'
 
-    def __init__(self, text="", name="", actions=None, informative=None) -> None:
-        """
-        :type informative: dict
-        :type actions: dict
-        :type name: str
-        :type text: str
-        """
+    name = Column(String(), primary_key=True)
+    text = Column(String())
+    actions = Column(sqlalchemy_jsonfield.JSONField())
+    informative = Column(sqlalchemy_jsonfield.JSONField())
 
-        self.informative = informative
-        self.name = name
-        self.actions = actions
-        self.text = text
-        self.highlight_node_text()
+    def __repr__(self) -> str:
+        return f"Node attributes:\n" \
+               f"\nname: {self.name}\n" \
+               f"\ntext: {self.text}\n" \
+               f"\nactions: {self.actions}\n" \
+               f"\ninformatives: {self.informative}\n"
 
     def get_name(self) -> str:
         return self.name
@@ -41,8 +48,10 @@ class Node:
         else:
             self.informative = {new_word: description}
 
-    def highlight_node_text(self) -> None:
+    def highlighted_text(self) -> str:
+        h_text = self.text
         for word in self.actions:
-            self.text = self.text.replace(word, f"[italic bold purple]{word}[/italic bold purple]")
+            h_text = h_text.replace(word, f"[italic bold purple]{word}[/italic bold purple]", 1)
         for word in self.informative:
-            self.text = self.text.replace(word, f"[italic bold green]{word}[/italic bold green]")
+            h_text = h_text.replace(word, f"[italic bold green]{word}[/italic bold green]", 1)
+        return h_text
