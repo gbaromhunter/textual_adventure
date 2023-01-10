@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from textual.app import App, ComposeResult, RenderResult
 from textual.containers import Container, Vertical
 from textual.reactive import reactive
-from textual.widgets import Label, Input
+from textual.widgets import Label, Input, ListView, ListItem
 
 from node_class import Node, Base
 
@@ -15,14 +15,11 @@ all_nodes = session.query(Node)
 
 
 # Define the widget classes
-class NodesList(Label):
+class Nodelist(ListView):
     """Displays the nodes list."""
-    node_names = [node.name for node in all_nodes]
-    nodes_names = "\n".join(node_names)
-    nodes_list_text = reactive(nodes_names)
 
-    def render(self) -> RenderResult:
-        return self.nodes_list_text
+    def compose(self) -> ComposeResult:
+        yield ListView(*[ListItem(Label(item.name)) for item in all_nodes])
 
 
 class MainInformation(Label):
@@ -56,9 +53,13 @@ class Editor(App):
     current = reactive(None)
 
     def compose(self) -> ComposeResult:
-        yield NodesList()
+        yield Nodelist()
         yield Vertical(MainInformation(), UserInput())
         yield Actions()
+
+    def on_listview_selected(self, event: ListView.Selected) -> None:
+        self.current = event.item
+        self.query_one(MainInformation).main_information_text = self.current.__repr__()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         for node in all_nodes:

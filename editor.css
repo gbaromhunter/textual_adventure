@@ -2,13 +2,22 @@ Screen {
     layout: horizontal
 }
 
-
-NodesList {
+ListView {
     background: $panel;
     color: $text;
     border: $secondary tall;
     content-align: center middle;
-    width: auto%;
+    width: 15%;
+    height: 100%;
+}
+
+
+Nodelist {
+    background: $panel;
+    color: $text;
+    border: $secondary tall;
+    content-align: center middle;
+    width: 15%;
     height: 100%;
 }
 
