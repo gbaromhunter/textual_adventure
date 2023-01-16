@@ -15,11 +15,19 @@ all_nodes = session.query(Node)
 
 
 # Define the widget classes
-class Nodelist(ListView):
-    """Displays the nodes list."""
+
+class Choices(ListView):
+    """Displays the node list."""
+    _choices: list[Node]
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._choices = all_nodes
 
     def compose(self) -> ComposeResult:
-        yield ListView(*[ListItem(Label(item.name)) for item in all_nodes])
+        """Compose the child widgets."""
+        for choice in self._choices:
+            yield ListItem(Label(choice.name))
 
 
 class MainInformation(Label):
@@ -51,18 +59,21 @@ class Editor(App):
     """This is the main application"""
     CSS_PATH = "editor.css"
     current = reactive(None)
+    all_nodes = reactive(all_nodes)
 
     def compose(self) -> ComposeResult:
-        yield Nodelist()
+        yield Choices()
         yield Vertical(MainInformation(), UserInput())
         yield Actions()
 
-    def on_listview_selected(self, event: ListView.Selected) -> None:
-        self.current = event.item
+
+    def on_list_view_selected(self, event: ListView.Selected) -> None:
+        self.current = event.item.children[0]
         self.query_one(MainInformation).main_information_text = self.current.__repr__()
 
+
     def on_input_submitted(self, event: Input.Submitted) -> None:
-        for node in all_nodes:
+        for node in self.all_nodes:
             if event.input.value == node.name:
                 self.current = node
         self.query_one(MainInformation).main_information_text = self.current.__repr__()
