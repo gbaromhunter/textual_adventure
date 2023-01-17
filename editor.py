@@ -19,9 +19,7 @@ all_nodes = list(all_nodes_query)
 
 class Choices(ListView):
     """Displays the node list."""
-    _choices: list[Node]
-
-    def __init__(self, choices) -> None:
+    def __init__(self, choices: list[Node]) -> None:
         super().__init__()
         self._choices = choices
 
