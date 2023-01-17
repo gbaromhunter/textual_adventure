@@ -11,7 +11,8 @@ engine = create_engine('sqlite:///nodes_database.sqlite')
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
-all_nodes = session.query(Node)
+all_nodes_query = session.query(Node)
+all_nodes = list(all_nodes_query)
 
 
 # Define the widget classes
@@ -66,11 +67,9 @@ class Editor(App):
         yield Vertical(MainInformation(), UserInput())
         yield Actions()
 
-
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         self.current = event.item.children[0]
         self.query_one(MainInformation).main_information_text = self.current.__repr__()
-
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         for node in self.all_nodes:
