@@ -20,9 +20,9 @@ class Choices(ListView):
     """Displays the node list."""
     _choices: list[Node]
 
-    def __init__(self) -> None:
+    def __init__(self, choices) -> None:
         super().__init__()
-        self._choices = all_nodes
+        self._choices = choices
 
     def compose(self) -> ComposeResult:
         """Compose the child widgets."""
@@ -62,7 +62,7 @@ class Editor(App):
     all_nodes = reactive(all_nodes)
 
     def compose(self) -> ComposeResult:
-        yield Choices()
+        yield Choices(self.all_nodes)
         yield Vertical(MainInformation(), UserInput())
         yield Actions()
 
