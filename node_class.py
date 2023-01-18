@@ -21,11 +21,11 @@ class Node(Base):
     informative = Column(sqlalchemy_jsonfield.JSONField())
 
     def __repr__(self) -> str:
-        return f"Node attributes:\n" \
-               f"\nname: {self.name}\n" \
-               f"\ntext: {self.text}\n" \
-               f"\nactions: {self.actions}\n" \
-               f"\ninformatives: {self.informative}\n"
+        return f"Node attributes:\n\n" \
+               f"\n\nname:\n{self.name}\n\n" \
+               f"\n\ntext:\n{self.text}\n\n" \
+               f"\n\nactions:\n{self.actions}\n\n" \
+               f"\n\ninformatives:\n{self.informative}\n\n"
 
     def get_name(self) -> str:
         return self.name

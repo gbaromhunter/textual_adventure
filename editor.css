@@ -1,50 +1,23 @@
-Screen {
-    layout: horizontal
-}
-
-
 Choices {
     background: $panel;
     color: $text;
     border: $secondary tall;
-    content-align: center middle;
-    width: auto;
-    height: auto;
+    height: 1fr;
+    width: 1fr;
 }
 
+#middle {
+    width: 2fr;
+}
 
 MainInformation {
-    background: $panel;
-    color: $text;
-    border: $secondary tall;
-    content-align: center middle;
-    width: auto;
-    height: auto;
+    height: 1fr;
 }
 
-
 UserInput {
-    background: $panel;
-    color: $text;
-    content-align: center middle;
-    width: auto;
-    height: auto;
+    height: 3;
 }
 
 Actions {
-    background: $panel;
-    color: $text;
-    border: $secondary tall;
-    content-align: center middle;
-    width: auto;
-    height: auto;
-}
-
-Vertical {
-    background: $panel;
-    color: $text;
-    border: $secondary tall;
-    content-align: center middle;
-    width: auto;
-    height: auto;
+    width: 1fr;
 }

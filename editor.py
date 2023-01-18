@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from textual.app import App, ComposeResult, RenderResult
-from textual.containers import Container, Vertical
+from textual.containers import Container, Vertical, Horizontal
 from textual.reactive import reactive
 from textual.widgets import Label, Input, ListView, ListItem
 
@@ -26,6 +26,9 @@ class Choices(ListView):
         """Compose the child widgets."""
         for choice in self._choices:
             yield ListItem(Label(choice.name))
+
+    def on_mount(self):
+        self.index = 0
 
 
 class MainInformation(Label):
@@ -60,13 +63,19 @@ class Editor(App):
     all_nodes = reactive(all_nodes)
 
     def compose(self) -> ComposeResult:
-        yield Choices(self.all_nodes)
-        yield Vertical(MainInformation(), UserInput())
-        yield Actions()
+        yield Horizontal(
+            Choices(self.all_nodes),
+            Vertical(
+                MainInformation(),
+                UserInput(),
+                id="middle"
+            ),
+            Actions()
+        )
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         self.current = event.item.children[0]
-        self.query_one(MainInformation).main_information_text = self.current.__repr__()
+        self.query_one(MainInformation).main_information_text = event.item.children[0].__repr__()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         for node in self.all_nodes:
