@@ -9,6 +9,12 @@ As it's built with TextualUI You can add widgets etc...
 
 It has support for SQLite and uses SQLAlchemy to persist the various Nodes.
 
+It will have an editor that will let you add, edit and remove the nodes of the games.
+
+Will add support for Chapter and Story.
+
+Thanks to: davep
+
 Screenshot of a test node:
 ![immagine](https://user-images.githubusercontent.com/93917594/211154228-061f80c9-a682-4a40-906d-2db03a4b8c87.png)
 
