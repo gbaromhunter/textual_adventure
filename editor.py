@@ -16,8 +16,16 @@ all_nodes = list(session.query(Node))
 
 # Define the widget classes
 
+
+class Choice(ListItem):
+    def __init__(self, choice) -> None:
+        super().__init__(Label(choice.name))
+        self.choice = choice
+
+
 class Choices(ListView):
     """Displays the node list."""
+
     def __init__(self, choices: list[Node]) -> None:
         super().__init__()
         self._choices = choices
@@ -25,7 +33,7 @@ class Choices(ListView):
     def compose(self) -> ComposeResult:
         """Compose the child widgets."""
         for choice in self._choices:
-            yield ListItem(Label(choice.name))
+            yield Choice(choice)
 
     def on_mount(self):
         self.index = 0
@@ -55,6 +63,9 @@ class UserInput(Container):
     def compose(self) -> ComposeResult:
         yield Input(placeholder="This is the user input")
 
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        event.input.value = ""
+
 
 class Editor(App):
     """This is the main application"""
@@ -74,15 +85,8 @@ class Editor(App):
         )
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
-        self.current = event.item.children[0]
-        self.query_one(MainInformation).main_information_text = event.item.children[0].__repr__()
-
-    def on_input_submitted(self, event: Input.Submitted) -> None:
-        for node in self.all_nodes:
-            if event.input.value == node.name:
-                self.current = node
+        self.current = self.all_nodes[self.query_one(Choices).index]
         self.query_one(MainInformation).main_information_text = self.current.__repr__()
-        event.input.value = ""
 
 
 # Runs the app
