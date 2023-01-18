@@ -79,14 +79,14 @@ class Editor(App):
             Vertical(
                 MainInformation(),
                 UserInput(),
-                id="middle"
+                id="middle",
             ),
             Actions()
         )
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         self.current = self.all_nodes[self.query_one(Choices).index]
-        self.query_one(MainInformation).main_information_text = self.current.__repr__()
+        self.query_one(MainInformation).main_information_text = event.item.choice.__repr__()
 
 
 # Runs the app

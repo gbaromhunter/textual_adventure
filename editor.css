@@ -7,11 +7,18 @@ Choices {
 }
 
 #middle {
+    background: $panel;
+    color: $text;
+    border: $secondary tall;
     width: 2fr;
+
 }
 
 MainInformation {
     height: 1fr;
+    overflow: auto auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 UserInput {
@@ -19,5 +26,8 @@ UserInput {
 }
 
 Actions {
+    background: $panel;
+    color: $text;
+    border: $secondary tall;
     width: 1fr;
 }
