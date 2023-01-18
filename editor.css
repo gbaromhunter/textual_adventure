@@ -1,3 +1,6 @@
+Screen {
+}
+
 Choices {
     background: $panel;
     color: $text;
@@ -6,16 +9,23 @@ Choices {
     width: 1fr;
 }
 
+Label {
+    width: 1fr;
+}
+
+
 #middle {
     background: $panel;
     color: $text;
     border: $secondary tall;
     width: 2fr;
+
 }
 
 MainInformation {
-    overflow-y: auto;
     height: 1fr;
+    padding: 1;
+    overflow-y: scroll;
 }
 
 UserInput {

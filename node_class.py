@@ -5,6 +5,19 @@ from sqlalchemy.ext.declarative import declarative_base
 # Import the Base class
 Base = declarative_base()
 
+action_color = "red"
+informative_color = "green"
+
+
+def format_dict(dictionary: dict):
+    return "\n".join(f"{k}: {v}" for k, v in dictionary.items())
+
+
+def highlight_keywords(text: str, words: list[str], color: str) -> str:
+    for word in words:
+        text = text.replace(word, f"[italic bold {color}]{word}[/italic bold {color}]", 1)
+    return text
+
 
 # Create the Node class
 class Node(Base):
@@ -21,11 +34,15 @@ class Node(Base):
     informative = Column(sqlalchemy_jsonfield.JSONField())
 
     def __repr__(self) -> str:
-        return f"Node attributes:" \
-               f"\n\nname:\n{self.name}\n\n" \
-               f"\n\ntext:\n{self.text}\n\n" \
-               f"\n\nactions:\n{self.actions}\n\n" \
-               f"\n\ninformatives:\n{self.informative}\n"
+        return f"Node attributes:\n" \
+               f"\nName:\n{self.name}\n" \
+               f"\nText:\n{self.highlighted_text()}\n" \
+               f"\nActions:\n" \
+               f"{self.formatted_dict_actions()}\n" \
+               f"\nInformatives:\n" \
+               f"{self.formatted_dict_informative()}\n"
+        # "\n".join(f"{k}: {v}" for k, v in self.actions.items()) \
+        # "\n".join(f"{k}: {v}" for k, v in self.informative.items())
 
     def get_name(self) -> str:
         return self.name
@@ -50,8 +67,14 @@ class Node(Base):
 
     def highlighted_text(self) -> str:
         h_text = self.text
-        for word in self.actions:
-            h_text = h_text.replace(word, f"[italic bold purple]{word}[/italic bold purple]", 1)
-        for word in self.informative:
-            h_text = h_text.replace(word, f"[italic bold green]{word}[/italic bold green]", 1)
+        h_text = highlight_keywords(h_text, list(self.actions.keys()), action_color)
+        h_text = highlight_keywords(h_text, list(self.informative.keys()), informative_color)
         return h_text
+
+    def formatted_dict_actions(self):
+        text_actions = format_dict(self.actions)
+        return highlight_keywords(text_actions, list(self.actions.keys()), action_color)
+
+    def formatted_dict_informative(self):
+        text_informatives = format_dict(self.informative)
+        return highlight_keywords(text_informatives, list(self.informative.keys()), informative_color)

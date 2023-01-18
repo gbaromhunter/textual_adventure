@@ -18,7 +18,7 @@ all_nodes = list(session.query(Node))
 
 
 class Choice(ListItem):
-    def __init__(self, choice) -> None:
+    def __init__(self, choice: Node) -> None:
         super().__init__(Label(choice.name))
         self.choice = choice
 
