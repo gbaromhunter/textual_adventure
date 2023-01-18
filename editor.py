@@ -11,8 +11,7 @@ engine = create_engine('sqlite:///nodes_database.sqlite')
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
-all_nodes_query = session.query(Node)
-all_nodes = list(all_nodes_query)
+all_nodes = list(session.query(Node))
 
 
 # Define the widget classes
