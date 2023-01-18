@@ -11,14 +11,11 @@ Choices {
     color: $text;
     border: $secondary tall;
     width: 2fr;
-
 }
 
 MainInformation {
+    overflow-y: auto;
     height: 1fr;
-    overflow: auto auto;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 UserInput {
