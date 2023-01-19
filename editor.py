@@ -42,11 +42,6 @@ class Choices(ListView):
 class MainInformation(Label):
     """Displays the main text."""
 
-    main_information_text = reactive("Here goes the main information")
-
-    def render(self) -> RenderResult:
-        return self.main_information_text
-
 
 class Actions(Label):
     """Displays the actions the user can perform."""
@@ -77,16 +72,16 @@ class Editor(App):
         yield Horizontal(
             Choices(self.all_nodes),
             Vertical(
-                MainInformation(),
+                Vertical(MainInformation("Here goes the main information")),
                 UserInput(),
-                id="middle",
-            ),
+                id="middle"),
             Actions()
+
         )
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         self.current = self.all_nodes[self.query_one(Choices).index]
-        self.query_one(MainInformation).main_information_text = event.item.choice.__repr__()
+        self.query_one(MainInformation).update(event.item.choice.__repr__())
 
 
 # Runs the app

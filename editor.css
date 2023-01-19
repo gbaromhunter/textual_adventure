@@ -23,9 +23,7 @@ Label {
 }
 
 MainInformation {
-    height: 1fr;
     padding: 1;
-    overflow-y: scroll;
 }
 
 UserInput {
