@@ -10,6 +10,7 @@ Base = declarative_base()
 action_color = "red"
 informative_color = "green"
 
+
 def format_dict(dictionary: dict):
     """format in a pleasant way the argument dictionary"""
 
