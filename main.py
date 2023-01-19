@@ -45,6 +45,7 @@ class UserInput(Container):
 
 class Adventure(App):
     """This is the main application"""
+
     CSS_PATH = "main.css"
     current_node = reactive(nodes_list[0])
 
