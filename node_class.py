@@ -10,8 +10,12 @@ Base = declarative_base()
 action_color = "red"
 informative_color = "green"
 
+def format_list(user_list: list) -> str:
+    """format in a pleasant way the argument dictionary"""
 
-def format_dict(dictionary: dict):
+    return "\n".join(f"{e}" for e in user_list)
+
+def format_dict(dictionary: dict) -> str:
     """format in a pleasant way the argument dictionary"""
 
     return "\n".join(f"{k}: {v}" for k, v in dictionary.items())
@@ -60,6 +64,10 @@ class Node(Base):
         """it gets the name of the node"""
 
         return self.name
+
+    def set_name(self, new_name: str) -> None:
+        """sets the name to the provided one"""
+        self.name = new_name
 
     def get_text(self) -> str:
         """it gets the main text of the node, witch will contain the action and informative words"""
@@ -115,3 +123,23 @@ class Node(Base):
 
         text_informatives = format_dict(self.informative)
         return highlight_keywords(text_informatives, list(self.informative.keys()), informative_color)
+
+
+class Chapter(Base):
+    """this class represent a chapter of a story, or a single chapter story"""
+
+    # this is a parameter relative to SQLAlchemy to identify the class in a table object
+    __tablename__ = 'chapters'
+
+    # define the parameters of the class
+    name = Column(String(), primary_key=True)
+    nodes = Column(sqlalchemy_jsonfield.JSONField())
+
+    def __repr__(self) -> str:
+        """
+        this function represents the object Node by formatting it correctly.
+        it will also highlight the action words and the informative words in their respective colors.
+        """
+        return f"Name of the chapter: {self.name}\n" \
+               f"\nList of nodes names:\n" \
+               f""
