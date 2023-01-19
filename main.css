@@ -23,6 +23,13 @@ Information {
     height: 1fr;
 }
 
+#main {
+    height: 2fr;
+}
+
+#informative {
+        height: 1fr;
+}
 
 UserInput {
     background: $panel;

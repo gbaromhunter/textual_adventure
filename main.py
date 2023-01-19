@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from textual.app import App, ComposeResult
-from textual.containers import Container
+from textual.containers import Container, Vertical
 from textual.reactive import reactive
 from textual.widgets import Label, Input
 
@@ -55,8 +55,8 @@ class Adventure(App):
 
     def compose(self) -> ComposeResult:
         """this method composes the App instance of widget children"""
-        yield MainBox(self.current_node.highlighted_text())
-        yield Information(informative_instruction)
+        yield Vertical(MainBox(self.current_node.highlighted_text()), id="main")
+        yield Vertical(Information(informative_instruction, id="informative"))
         yield UserInput()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
